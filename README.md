@@ -43,3 +43,29 @@ if __name__ == "__main__":
 ```
 
 Further examples can be found in tests.
+
+
+multiprocessing.Queue class içinde 
+
+```
+    def _after_fork(self):
+            debug('Queue._after_fork()')
+            self._reset(after_fork=True)
+```
+metodu var, bu metod, portable_queue.py içindeki `__setstate__` metodu tarafından çağırılıyor, fakat Windows OS hata veriyor. Bunu düzeltmek için, _after_fork metodu şu şekilde güncellendi;
+
+```
+    def _after_fork(self):
+        if sys.platform == 'win32':
+            self._reset(after_fork=False)
+            
+        else:      
+            self._reset(after_fork=True)
+```
+
+
+
+
+
+
+
